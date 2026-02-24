@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Product Card</title>
+    <style>
+        :root {
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --border: #e2e8f0;
+            --badge-bg: #ef4444;
+            --radius: 12px;
+            --transition: 0.2s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, sans-serif;
+        }
+
+        body {
+            background: var(--bg-body);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 380px;
+            display: flex;
+            flex-direction: column;
+            transition: transform var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .image-container {
+            position: relative;
+            background: #f8fafc;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform var(--transition);
+        }
+
+        .card:hover .product-img {
+            transform: scale(1.05);
+        }
+
+        .badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--badge-bg);
+            color: #fff;
+            padding: 0.25rem 0.75rem;
+            border-radius: 99px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .title {
+            color: var(--text-main);
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .description {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin-bottom: 1.25rem;
+            flex-grow: 1;
+        }
+
+        .pricing {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .original-price {
+            color: var(--text-muted);
+            text-decoration: line-through;
+            font-size: 1rem;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .quantity-wrapper {
+            display: flex;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            width: max-content;
+        }
+
+        .qty-btn {
+            background: none;
+            border: none;
+            width: 2.5rem;
+            height: 2.5rem;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: var(--text-main);
+            transition: var(--transition);
+        }
+
+        .qty-btn:hover:not(:disabled) {
+            background: var(--bg-body);
+        }
+
+        .qty-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .qty-input {
+            width: 3rem;
+            text-align: center;
+            border: none;
+            border-left: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+            font-weight: 600;
+        }
+
+        .add-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 0.875rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+        }
+
+        .add-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .add-btn:active {
+            transform: scale(0.98);
+        }
+
+        .toast {
+            margin-top: 1rem;
+            background: #10b981;
+            color: #fff;
+            padding: 0.75rem;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.875rem;
+            font-weight: 500;
+            opacity: 0;
+            display: none;
+            transition: opacity 0.3s;
+        }
+
+        @media (min-width: 768px) {
+            .card {
+                max-width: 720px;
+                flex-direction: row;
+                height: 380px;
+            }
+
+            .image-container {
+                width: 45%;
+                border-right: 1px solid var(--border);
+            }
+
+            .content {
+                width: 55%;
+                padding: 2rem;
+            }
+
+            .controls {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .add-btn {
+                flex-grow: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <article class="card">
+        <figure class="image-container">
+            <span class="badge">-20%</span>
+            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=800&auto=format&fit=crop"
+                alt="Wireless Headphones" id="product-img" class="product-img"
+                onerror="this.src='https://via.placeholder.com/400x400?text=Image+Not+Found'">
+        </figure>
+
+        <div class="content">
+            <h1 class="title">Premium Wireless Headphones</h1>
+            <p class="description">Experience crystal-clear audio with our noise-cancelling wireless headphones.
+                Features 30-hour battery life and ultra-comfortable ear cushions.</p>
+
+            <div class="pricing">
+                <span class="price">$199.99</span>
+                <span class="original-price">$249.99</span>
+            </div>
+
+            <div class="controls">
+                <div class="quantity-wrapper">
+                    <button type="button" class="qty-btn" id="btn-decrease" disabled>&minus;</button>
+                    <input type="text" id="qty-input" class="qty-input" value="1" readonly aria-label="Quantity">
+                    <button type="button" class="qty-btn" id="btn-increase">&plus;</button>
+                </div>
+                <button type="button" class="add-btn" id="btn-add">Add to Cart</button>
+            </div>
+            <div id="toast" class="toast">Item added to cart!</div>
+        </div>
+    </article>
+
+    <script>
+        const MIN_QTY = 1;
+        const MAX_QTY = 10;
+
+        const ui = {
+            input: document.getElementById('qty-input'),
+            decrease: document.getElementById('btn-decrease'),
+            increase: document.getElementById('btn-increase'),
+            add: document.getElementById('btn-add'),
+            toast: document.getElementById('toast')
+        };
+
+        const updateState = (qty) => {
+            ui.input.value = qty;
+            ui.decrease.disabled = qty <= MIN_QTY;
+            ui.increase.disabled = qty >= MAX_QTY;
+        };
+
+        ui.decrease.addEventListener('click', () => {
+            const current = parseInt(ui.input.value);
+            if (current > MIN_QTY) updateState(current - 1);
+        });
+
+        ui.increase.addEventListener('click', () => {
+            const current = parseInt(ui.input.value);
+            if (current < MAX_QTY) updateState(current + 1);
+        });
+
+        ui.add.addEventListener('click', () => {
+            ui.toast.style.display = 'block';
+            setTimeout(() => ui.toast.style.opacity = '1', 10);
+
+            setTimeout(() => {
+                ui.toast.style.opacity = '0';
+                setTimeout(() => ui.toast.style.display = 'none', 300);
+            }, 3000);
+        });
+    </script>
+</body>
+
+</html>
