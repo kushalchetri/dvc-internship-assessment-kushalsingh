@@ -1,9 +1,8 @@
 <?php
 /**
  * Plugin Name: Testimonials Plugin
- * Description: A lightweight custom post type plugin to manage and display testimonials via shortcode.
- * Version: 1.0.0
- * Author: Nikit
+ * Description: A lightweight custom post type plugin to manage and display testimonials.
+ * Author: Kushal
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
